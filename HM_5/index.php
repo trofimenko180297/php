@@ -80,8 +80,8 @@ switch ($res){
 ?>
 <hr/>
 <?php
-for ($i=1; $i<=100; $i++){
-    for ($k=3; $k<$i; $k++){
+for ($i=3; $i<=100; $i++){
+    for ($k=2; $k<$i; $k++){
         $test = null;
         $t = $i%$k;
         if ($t == 0){
@@ -96,9 +96,9 @@ if (isset($test)){
 ?>
 <hr/>
 <?php
-$i_2=4;
+$i_2=3;
 while ($i_2<=100) {
-    $k_2 = 3;
+    $k_2 = 2;
     while ($k_2 < $i_2) {
         $test_2 = null;
         $t_2 = $i_2%$k_2;
