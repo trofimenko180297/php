@@ -6,7 +6,7 @@ function test($a){
     if (isset($arr[0]) && isset($arr[1]) && isset($arr[2])) {
         foreach ($arr as $item_1) {
             trim($item_1,' ,.');
-            $length[] = strlen($item_1);
+            $length[] = mb_strlen($item_1);
         }
         arsort($length);
         $test = array_keys($length);
