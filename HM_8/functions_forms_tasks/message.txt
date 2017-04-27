@@ -1,0 +1,1 @@
+a:2:{s:4:"name";s:7:"Vitalik";s:7:"message";s:26:"Hello, my name is Vitalik!";}
