@@ -1,0 +1,29 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+<form class="form-group" enctype="multipart/form-data" action="" method="post">
+<input type="hidden" name="id" value="<?=$data['news'][0]['id']?>"/>
+<label for="category">Category:</label>
+<select class="form-control" id="category" name="category">
+    <?php foreach($data['category'] as $category): ?>
+    <option value="<?=$category['id']?>" <?php if ($category['category'] == $data['news'][0]['category']) {?>selected<?php } ?> ><?=$category['category']?></option>
+    <?php endforeach; ?>
+</select><br/>
+<label for="tittle">Tittle:</label>
+<input type="text" class="form-control" id="tittle" value="<?=$data['news'][0]['tittle']?>" name="tittle" placeholder="Tittle"><br/>
+<label for="general">General image:</label>
+<input type="file" name="general_img" id="general" class="form-control"><br/>
+<label for="content">Content:</label>
+<textarea class="form-control" name="content" id="content" placeholder="Content"><?=$data['news'][0]['content']?></textarea><br/>
+<label for="file">Additional pictures:</label>
+<input type="file" id="file" name="addition_img[]" class="form-control" accept=".jpg, .jpeg, .png" multiple=""><br/>
+<label for="tags">Tags:</label>
+<input type="text" id="tags" class="form-control" value="<?=$data['news'][0]['tag']?>" name="tags"><br/>
+<label for="anal">Analitic</label>
+<input type="checkbox" <?php if ($data['news'][0]['is_analitic'] == 1){?>checked<?php } ?> id="anal" name="analitic" value="1"/><br/>
+<input type="submit" class="btn btn-success btn-block" value="Save">
+</form>
+        </div>
+    </div>
+</div>

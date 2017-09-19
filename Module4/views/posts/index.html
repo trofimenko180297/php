@@ -1,0 +1,81 @@
+<div class="">
+<div id="slider" class="sl-slider-wrapper">
+    <?php foreach($data['news_slider'] as $news): ?>
+    <?php
+    $id = $news['id'];
+    $image = $news['general_image'];
+    ?>
+    <div class="sl-slider">
+        <div class="sl-slide" data-orientation="horizontal" data-slice1-rotation="<?=rand(-25,25)?>" data-slice2-rotation="<?=rand(-25,25)?>" data-slice1-scale="<?=rand(1,2)?>" data-slice2-scale="<?=rand(1,2)?>">
+            <div class="sl-slide-inner">
+                <div class="bg-img bg-img-5" style="background-image: url('/uploads/<?=$id?>/<?=$image?>')"></div>
+                <h2><a href="#"><?=$news['tittle']?></a></h2>
+                <blockquote>
+                    <p><?=$news['category']?></p>
+                    <p><?=$news['date']?></p>
+                </blockquote>
+            </div>
+        </div>
+    </div>
+    <?php endforeach; ?>
+
+    <nav id="nav-dots" class="nav-dots">
+        <span class="nav-dot-current"></span>
+        <?php if (count($data['news_slider']) > 1): ?>
+        <?php foreach (range(2, count($data['news_slider'])) as $item): ?>
+        <span></span>
+        <?php endforeach; ?>
+        <?php endif; ?>
+    </nav>
+</div><!-- /slider-wrapper -->
+</div>
+<hr/>
+<div class="container">
+    <div class="row">
+        <?php foreach ($data['category'] as $category): ?>
+        <div class="col-md-3">
+            <div class="list-group">
+                <h2><a href="/posts/category/<?=$category['category']?>" data-toggle="tooltip" title="View all"><?=$category['category']?>:</a></h2>
+                <?php foreach ($data['news_category'] as $news_all): ?>
+                <?php if (key($news_all) == $category['category']): ?>
+                <?php foreach ($news_all as $news_category): ?>
+                <?php foreach ($news_category as $news): ?>
+                <a href="/posts/view/<?=$news['id']?>" class="list-group-item" data-toggle="tooltip" title="<?=$news['date']?>"><?=$news['tittle']?></a>
+                <?php endforeach; ?>
+                <?php endforeach; ?>
+                <?php endif; ?>
+                <?php endforeach; ?>
+            </div>
+        </div>
+        <?php endforeach; ?>
+        <div class="col-md-3">
+            <div class="list-group">
+                <h2><a href="/posts/analitic" data-toggle="tooltip" title="View all">Analitic:</a></h2>
+                <?php foreach ($data['analitic'] as $analitic): ?>
+                <a href="/posts/view/<?=$analitic['id']?>" class="list-group-item" data-toggle="tooltip" title="<?=$news['date']?>"><?=$analitic['tittle']?></a>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+</div>
+<hr/>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <h2>Top 5 user:</h2>
+            <div class="list-group">
+            <?php foreach ($data['top_commentator'] as $commentator): ?>
+            <a href="/comments/user/<?=$commentator['id']?>" class="list-group-item"><?=$commentator['login']?><span class="badge">Total comment: <?=$commentator['total']?></span></a>
+            <?php endforeach; ?>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <h2>Top 5 news :</h2>
+            <div class="list-group">
+                <?php foreach ($data['top_news'] as $news): ?>
+                <a href="/posts/view/<?=$news['id']?>" class="list-group-item"><?=$news['news_tittle']?><span class="badge">Total comment: <?=$news['total']?></span></a>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+</div>

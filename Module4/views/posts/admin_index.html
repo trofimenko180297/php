@@ -1,0 +1,67 @@
+<div class="container">
+    <h2>Current news</h2>
+    <p>Contextual classes can be used to color table rows or table cells. The classes that can be used are: .active, .success, .info, .warning, and .danger.</p>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Category</th>
+            <th>Tittle</th>
+            <th>Date</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($data['news'] as $news): ?>
+        <tr>
+            <td class="col-md-2"><?=$news['id']?></td>
+            <td class="col-md-2"><?=$news['category']?></td>
+            <td class="col-md-2"><?=$news['tittle']?></td>
+            <td class="col-md-2"><?=$news['date']?></td>
+            <td class="col-md-4">
+            <div class="pull-right">
+                <a href="/admin/posts/edit/<?=$news['id']?>" class="btn btn-warning">Edit</a>
+                <a href="/admin/posts/delete/<?=$news['id']?>" class="btn btn-danger">Delete</a>
+            </div>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+    <div id="form"></div>
+    <button class="btn btn-info btn-block" id="add_post">Add +</button>
+</div>
+
+<!-- jQuery -->
+<script src="/webroot/js/jquery-3.2.1.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="/webroot/bootstrap/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#add_post').bind("click", function (){
+            $('#form').append(
+                '<form class="form-group" method="post" enctype="multipart/form-data" action="/admin/posts/add">'
+                +'<div class="row">'
+                +'<div class="col-md-2"><input type="text" class="form-control" placeholder="ID" disabled/></div>'
+                +'<div class="col-md-2">'
+                +'<select class="form-control" name="category">'
+                +'<?php foreach ($data["categories"] as $category){ ?>'
+                +'<option value="'+'<?=$category["id"]?>'+'"><?=$category["category"]?></option>'
+                +'<?php } ?>'
+                +'</select>'
+                +'</div>'
+                +'<div class="col-md-2"><input type="text" class="form-control" name="tittle" placeholder="Tittle" /></div>'
+                +'<div class="col-md-2"><input type="text" class="form-control" placeholder="Current date" disabled/></div>'
+                +'<div class="col-md-4"><input type="file" name="general_img" class="form-control"/></div>'
+                +'</div><br/><div class="row">'
+                +'<div class="col-md-12"><textarea class="form-control" name="content" placeholder="Content"></textarea></div>'
+                +'</div><br/><div class="row">'
+                +'<div class="col-md-12"><label for="file">Additional pictures:</label><input type="file" id="file" name="addition_img[]" class="form-control" accept=".jpg, .jpeg, .png" multiple/></div>'
+                +'</div><br/><div class="row">'
+                +'<div class="col-md-12"><input type="text" class="form-control" name="tags"></div>'
+                +'</div><br/><div class="row">'
+                +'<div class="col-md-12"><input type="submit" class="btn btn-success btn-block" value="Save"></div>'
+                +'</div></form>')
+        });
+    });
+</script>

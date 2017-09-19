@@ -1,0 +1,14 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <form action="/admin/sites/set" class="form-group" method="post">
+                <label for="site_color">Site color:</label>
+                <input type="text" class="form-control" value="<?=Session::get('site_color')?>" id="site_color" name="site_color"><br/>
+                <label for="admin_color">Admin nav color:</label>
+                <input type="text" class="form-control" value="<?=Session::get('admin_color')?>" id="admin_color" name="admin_color"><br/>
+                <input type="submit" class="btn btn-success btn-block" value="Change">
+            </form>
+        </div>
+    </div>
+</div>

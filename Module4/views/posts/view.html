@@ -1,0 +1,136 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="property-images">
+<div id="myCarousel" class="carousel slide" data-ride="carousel">
+    <!-- Indicators -->
+    <ol class="carousel-indicators hidden-xs">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <?php foreach (range(2, count($data['img'])) as $item): ?>
+        <li data-target="#myCarousel" data-slide-to="1" class=""></li>
+        <?php endforeach; ?>
+    </ol>
+    <div class="carousel-inner">
+        <?php foreach ($data['img'] as $img): ?>
+        <?php static $active = true; ?>
+        <div class="item <?=$active ? 'active':''?>">
+            <img src="/webroot/uploads/<?=$data['news'][0]['id']?>/view/<?=$img?>"  class="properties" alt="properties" />
+        </div>
+        <?php $active = false; endforeach; ?>
+    </div>
+    <a class="left carousel-control" href="#myCarousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
+    <a class="right carousel-control" href="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+</div>
+            </div>
+        </div>
+    </div>
+</div>
+<br/>
+<div class="container">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 well">
+        <h3><?=$data['news'][0]['tittle']?></h3>
+        <h4><?=$data['news'][0]['date']?></h4><br/>
+        <?php if ($data['news'][0]['is_analitic']){ ?>
+            <?php if (Session::get('login')){ ?>
+            <p><?=$data['news'][0]['content']?></p>
+            <?php }else{ ?>
+            <p><?=$data['news'][0]['short_content']?>...<h4 class="text-danger"><br/>Register or login to see all the analitic text</h4></p>
+            <?php } ?>
+        <?php }else{ ?>
+            <p><?=$data['news'][0]['content']?></p>
+        <?php } ?>
+            <span class="badge pull-right">Only readed: <span id="only">0</span></span>
+            <span class="badge pull-right">Active users: <span id="active">0</span></span>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <?php foreach ($data['comments'] as $comment): ?>
+    <?php static $count = 1; $id = $comment['id']; $id_user = Session::get('user_id'); $id_post = $data['news'][0]['id']?>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 well">
+        <span id="id_comment" hidden><?=$comment['id']?></span>
+        <h4><?=$comment['user']?></h4>
+            <p><?=$comment['content']?></p>
+        <div>
+            <span class="pull-left positive" id="p_<?=$count?>"><img src="/webroot/img/plus.png" style="width: 30px;height: 30px" alt="plus">:<span class="pos_num"><?=$comment['positive']?></span></span>
+            <span class="pull-left negative" id="n_<?=$count?>"><img src="/webroot/img/minus.png" style="width: 30px;height: 30px" alt="minus">:<span class="neg_num"><?=$comment['negative']?></span></span>
+            <span class="pull-right"><?=$comment['date']?></span><br/>
+            <?php if (Session::get('login')){ ?>
+            <p><a href="/comments/add_to/<?=$id_post?>/<?=$id?>"><span class=" btn btn-info pull-right">Reply</span></a></p>
+            <?php } ?>
+        </div>
+            <div id="reply_form"></div>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <?php $count++; ?>
+    <div class="row">
+        <div class="col-md-1"></div>
+        <?php foreach ($data['comments_comments'] as $coment_coment_all): ?>
+        <?php if (key($coment_coment_all) == $comment['id']): ?>
+        <?php foreach ($coment_coment_all as $coments): ?>
+        <?php foreach ($coments as $comment): ?>
+        <div class="col-md-4 well">
+            <h4><?=$comment['login']?></h4>
+            <p><?=$comment['content']?></p>
+            <span class="pull-right"><?=$comment['date']?></span><br/>
+        </div>
+        <?php endforeach; ?>
+        <?php endforeach; ?>
+        <?php endif; ?>
+        <?php endforeach; ?>
+    </div>
+    <?php endforeach; ?>
+</div>
+<?php if (Session::get('login')): ?>
+<div class="container">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <form action="/comments/add" method="post" class="form-group">
+                <input type="hidden" name="id_user" value="<?=Session::get('user_id')?>">
+                <input type="hidden" name="id_post" value="<?=$data['news'][0]['id']?>">
+                <label for="text">Comment:</label>
+                <textarea class="form-control" name="content" id="text"></textarea><br/>
+                <input type="submit" class="btn btn-success btn-block" value="Send">
+            </form>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
+<script type="text/javascript">
+    setInterval(function() {
+        $.get("/posts/getUsers", function(data){
+            var a = $('#active').text();
+            var b = $('#only').text();
+            var sum = Number(a) + Number(b);
+            $('#only').text(sum);
+            $('#active').text(data);
+        });
+    }, 3000);
+    $('.positive').one("click", function () {
+        var id = $('.positive').attr('id');
+        console.log(id);
+        var id_comment = $('#id_comment').text();
+        var positive = $('.pos_num').text();
+        var sum = Number(positive) + 1;
+       $.post("/comments/status", { status: 'positive', id_comment: id_comment }, function (data) {
+            $('.pos_num').text(sum);
+            $('.negative').unbind("click");
+       });
+    });
+    $('.negative').one("click", function () {
+        var id_comment = $('#id_comment').text();
+        var negative = $('.neg_num').text();
+        var sum = Number(negative) - 1;
+        $.post("/comments/status", { status: 'negative', id_comment: id_comment }, function (data) {
+            $('.neg_num').text(sum);
+            $('.positive').unbind("click");
+        });
+    });
+</script>

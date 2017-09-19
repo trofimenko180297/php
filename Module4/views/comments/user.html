@@ -1,0 +1,39 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-1"></div>
+        <?php foreach($data['comments'] as $comment) { ?>
+        <div class="col-md-2 well">
+            <h2><?=$comment['user']?></h2>
+            <p><?=$comment['date']?></p>
+            <p>News:<a href="/posts/view/<?=$comment['id_news']?>"><?=$comment['news_tittle']?></a></p>
+            <p><?=$comment['content']?></p>
+            <div>
+                <span class="pull-left positive"><img src="/webroot/img/plus.png" style="width: 30px;height: 30px" alt="plus">:<span class="pos_num"><?=$comment['positive']?></span></span>
+                <span class="pull-left negative"><img src="/webroot/img/minus.png" style="width: 30px;height: 30px" alt="minus">:<span class="neg_num"><?=$comment['negative']?></span></span>
+            </div>
+        </div>
+        <?php } ?>
+        <div class="col-md-1"></div>
+    </div>
+</div>
+<div style="text-align: center">
+    <ul class="pagination">
+        <?php if($data['count'][0]['num'] > 5): ?>
+        <li><a href="1">1</a></li>
+        <?php $i=2;do{$check = ($data['count'][0]['num']-5) - $i*5;?>
+        <li><a href="<?=$i?>" class="pag" hidden><?=$i?></a></li>
+        <?php $i++;}while($check>0); ?>
+        <?php if ($data['count'][0]['num'] > 10): ?>
+        <li><a href="#" id="pagination">...</a></li>
+        <?php endif; ?>
+        <li><a href="<?=ceil($data['count'][0]['num']/5)?>"><?php echo ceil($data['count'][0]['num']/5); ?></a></li>
+        <?php endif; ?>
+    </ul>
+</div>
+<script type="text/javascript">
+    $('#pagination').bind("click",function() {
+        $('.pag').show(800);
+        $('#pagination').hide(800);
+    });
+</script>
+

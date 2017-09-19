@@ -1,0 +1,33 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-1"></div>
+        <?php foreach($data['analitic'] as $analitic) { ?>
+        <div class="col-md-2 well">
+            <h2><?=$analitic['tittle']?></h2>
+            <p><?=$analitic['date']?></p>
+            <h4><a href="/posts/view/<?=$analitic['id']?>">Read</a></h4>
+            <?php $tags = explode (',', $analitic['tags']) ?>
+            <?php foreach ($tags as $tag): ?>
+            <a href="/posts/tag/<?=$tag?>"><span class="badge"><?=$tag?></span></a>
+            <?php endforeach; ?>
+        </div>
+        <?php } ?>
+        <div class="col-md-1"></div>
+    </div>
+</div>
+<div style="text-align: center">
+    <ul class="pagination">
+        <li><a href="#">1</a></li>
+        <li><a href="#" id="pagination">...</a></li>
+        <li><a href="#" class="pag" hidden>2</a></li>
+        <li><a href="#" class="pag" hidden>3</a></li>
+        <li><a href="#">4</a></li>
+    </ul>
+</div>
+<script type="text/javascript">
+    $('#pagination').bind("click",function() {
+        $('.pag').show(800);
+        $('#pagination').hide(800);
+    });
+</script>
+

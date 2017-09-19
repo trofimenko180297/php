@@ -1,0 +1,36 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-1"></div>
+        <?php foreach($data['news'] as $news) { ?>
+        <div class="col-md-2 well">
+            <h2><?=$news['tittle']?></h2>
+            <p><?=$news['date']?></p>
+            <h4><a href="/posts/view/<?=$news['id']?>">Read</a></h4>
+            <?php $tags = explode (',', $news['tags']) ?>
+            <?php foreach ($tags as $tag): ?>
+            <a href="/posts/tag/<?=$tag?>"><span class="badge"><?=$tag?></span></a>
+            <?php endforeach; ?>
+        </div>
+        <?php } ?>
+        <div class="col-md-1"></div>
+    </div>
+</div>
+<div style="text-align: center">
+    <ul class="pagination">
+        <li><a href="1">1</a></li>
+        <?php $i=2;do{$check = ($data['count'][0]['num']-5) - $i*5;?>
+        <li><a href="<?=$i?>" class="pag" hidden><?=$i?></a></li>
+        <?php $i++;}while($check>0); ?>
+        <?php if ($data['count'][0]['num'] > 10): ?>
+        <li><a href="#" id="pagination">...</a></li>
+        <?php endif; ?>
+        <li><a href="<?=ceil($data['count'][0]['num']/5)?>"><?php echo ceil($data['count'][0]['num']/5); ?></a></li>
+    </ul>
+</div>
+<script type="text/javascript">
+    $('#pagination').bind("click",function() {
+       $('.pag').show(800);
+       $('#pagination').hide(800);
+    });
+</script>
+

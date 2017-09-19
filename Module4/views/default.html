@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="/webroot/bootstrap/css/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="/webroot/bootstrap/css/bootstrap-theme.min.css">
+
+    <!-- Owl stylesheet -->
+    <link rel="stylesheet" href="/webroot/assets/owl-carousel/owl.carousel.css" >
+    <link rel="stylesheet" href="/webroot/assets/owl-carousel/owl.theme.css" >
+    <!-- Owl stylesheet -->
+
+    <!-- jQuery -->
+    <script src="/webroot/js/jquery-3.2.1.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="/webroot/bootstrap/js/bootstrap.min.js"></script>
+
+    <script src="/webroot/source/script.js" ></script>
+
+    <!-- slitslider -->
+    <link rel="stylesheet" type="text/css" href="/webroot/source/slitslider/css/style.css"  />
+    <link rel="stylesheet" type="text/css" href="/webroot/source/slitslider/css/custom.css"  />
+    <script type="text/javascript" src="/webroot/source/slitslider/js/modernizr.custom.79639.js" ></script>
+    <script type="text/javascript" src="/webroot/source/slitslider/js/jquery.ba-cond.min.js" ></script>
+    <script type="text/javascript" src="/webroot/source/slitslider/js/jquery.slitslider.js" ></script>
+    <script src="/webroot/assets/owl-carousel/owl.carousel.js" ></script>
+    <!-- slitslider -->
+
+    <title><?=Config::get('site_name')?></title>
+</head>
+<body style="background-color: <?=Session::get('site_color')?>">
+<nav class="navbar navbar-default fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/" class="navbar-brand"><?=Config::get('site_name')?></a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <div class="navbar-form navbar-left">
+                <form method="post" role="form"><input type="text" id="search" class="form-control" placeholder="Search"></form>
+            </div>
+            <div class="navbar-form navbar-right">
+                <?php if (Session::get('login')){ ?>
+                <a href="/users/logout" class="btn btn-warning">Logout (<?=Session::get('login')?>)</a>
+                <?php }else{ ?>
+                <button class="btn btn-warning" data-toggle="modal" data-target="#Register">Register</button>
+                <button class="btn btn-success" data-toggle="modal" data-target="#Login">Login</button>
+                <?php } ?>
+            </div>
+        </div>
+    </div>
+</nav>
+<div id="Login" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-body">
+            <button class="close" data-dismiss="modal">x</button><br/><br/>
+            <form action="/users/login" method="post">
+            <p><input type="text" class="form-control" name="login" placeholder="Login"></p>
+            <p><input type="password" class="form-control" name="password" placeholder="Password"></p>
+            <p><input type="submit" class="btn btn-success btn-block" value="Login"></p>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="Register" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-body">
+            <button class="close" data-dismiss="modal">x</button><br/><br/>
+            <form action="/users/register" method="post">
+                <p><input type="text" class="form-control" name="login" placeholder="Login"></p>
+                <p><input type="email" class="form-control" name="email" placeholder="Email"></p>
+                <p><input type="password" class="form-control" name="password" placeholder="Password"></p>
+                <p><input type="submit" class="btn btn-success btn-block" value="Register"></p>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="container" hidden id="block"><h4>Maybe you are finding:</h4><span id="result"></span></div><br/>
+
+    <?=$data['content']?>
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#search').on('input', function() {
+            var searchKeyword = $(this).val();
+            if (searchKeyword.length >= 3) {
+                $('#block').fadeIn();
+                $.post('/posts/search', { keywords: searchKeyword }, function(data) {
+                    $.each(data.result, function() {
+                        $('#result').append('<a href = "/posts/tag/' + this + '">' + this + '</a>' + ' ');
+                    });
+                }, "json");
+            }else{
+                $('#block').fadeOut();
+            }
+        });
+        $('[data-toggle="tooltip"]').tooltip ();
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<div class="container">
+    <h2>Current news categories</h2>
+    <p>Contextual classes can be used to color table rows or table cells. The classes that can be used are: .active, .success, .info, .warning, and .danger.</p>
+    <table class="table" id="category">
+        <thead>
+        <tr class="info">
+            <th>ID</th>
+            <th>Category</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($data['categories'] as $category): ?>
+        <tr class="success">
+            <td class="col-md-2"><?=$category['id']?></td>
+            <td class="col-md-8"><?=$category['category']?></td>
+            <td class="col-md-2">
+                <div class="pull-right">
+                <a href="/admin/categories/edit/<?=$category['id']?>" class="btn btn-warning">Edit</a>
+                <a href="/admin/categories/delete/<?=$category['id']?>" class="btn btn-danger">Delete</a>
+                </div>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+    <div id="form"></div>
+    <button id="add_category" class="btn btn-info btn-block">Add +</button>
+</div>
+
+<!-- jQuery -->
+<script src="/webroot/js/jquery-3.2.1.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="/webroot/bootstrap/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#add_category').bind("click", function (){
+            $('#form').append(
+                '<form class="form-group" method="post" action="/admin/categories/add">'
+                +'<input type="text" class="form-control" name="category"><br/>'
+                +'<input type="submit" class="btn btn-success btn-block" value="Save"></form>')
+        });
+        $('#add_post').bind("click", function (){
+            $('#form').append(
+                '<form class="form-group row" method="post" action="/admin/posts/add">'
+                +'<div class="col-md-2"><input type="text" class="form-control" disabled/></div>'
+                +'<sdiv class="col-md-2">' +
+                '<select class="form-control" name="category">' +
+
+                '</select>'
+                +'<div class="col-md-2"><input type="text" class="form-control" name="tittle"></div>'
+                +'<div class="col-md-2"><input type="text" class="form-control" disabled></div>'
+                +'<div class="col-md-4"><input type="submit" class="btn btn-success btn-block" value="Save"></div></form>')
+        });
+    });
+</script>
